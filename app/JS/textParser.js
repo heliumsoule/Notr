@@ -33,14 +33,37 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 					return;
 				}
 				else {
-					break;
+					var nodeData = {
+						name: undefined,
+						parent: {
+							name: undefined,
+							id: undefined,
+							tier: undefined
+						},
+						text: []
+					};
+					if (/\(/.exec(currLine).index == -1) {
+						$scope.errorWarning = "The starting node should be specified with the () on line " + count + 1;
+						return;
+					}
+					else {
+						var end = /\(/.exec(currLine).index;
+						nodeData.name = currLine.substr(1, end - 1);
+						$scope.nodeList.push(nodeData);
+						count = count + 1
+						console.log($scope.nodeList);
+						// break;
+					}
+
 				}
 			}
 			count = count + 1;
 		}
-
+		console.log("What is i ", count);
+		console.log($scope.inputText.length);
 		for(var i = count; i < $scope.inputText.length; i++) {
-			var currLine = $scope.inputText.length[i];
+			var currLine = $scope.inputText[i];
+			console.log("What is the currLine ", currLine);
 			var indexSymAt = /@/.exec(currLine).index, indexSymPound = /-/.exec(currLine).index;
 			if (indexSymAt != -1) {
 				var nodeData = {
@@ -102,18 +125,18 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 
 					}
 				}
-				nodeList.append(nodeData)
+				nodeList.push(nodeData)
 			}
 			else if (indexSymPound != -1) {
-				nodeList[-1].text.append(currLine.substr(indexSymPound + 1));
+				nodeList[-1].text.push(currLine.substr(indexSymPound + 1));
 			}
 			else {
-				$scope.errorWarning = "Specify either an @ or - attribute at the start of line " + count;
-				return;
+				// $scope.errorWarning = "Specify either an @ or - attribute at the start of line " + count;
+				// return;
 			}
 		}
 		$scope.nodeList = nodeList;
-		console.log(nodeList);
+		console.log("What is the nodeList ", nodeList);
 	};
 });
 

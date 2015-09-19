@@ -1,6 +1,7 @@
 angular.module('myApp', []).controller('textParser', function($scope) {
 	$scope.show = 0;
 	$scope.errorWarning = "Today is a Saturday";
+	$scope.nodeList = [];
 
 	$scope.addSpaces = function() {
 		inputText = $scope.inputText;
@@ -21,6 +22,7 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 			return;
 		}
 		var text = $scope.inputText;
+		$scope.nodeList = [];
 		nodeList = [];
 		var count = 0, foundAt = false;
 		while (count < $scope.inputText.length) {
@@ -105,7 +107,13 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 			else if (indexSymPound != -1) {
 				nodeList[-1].text.append(currLine.substr(indexSymPound + 1));
 			}
+			else {
+				$scope.errorWarning = "Specify either an @ or - attribute at the start of line " + count;
+				return;
+			}
 		}
+		$scope.nodeList = nodeList;
+		console.log(nodeList);
 	};
 });
 

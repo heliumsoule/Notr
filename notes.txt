@@ -1,0 +1,36 @@
+@Reading 6: Specifications (#Objectives, #Introduction, #Specifications id="Part 1", #Exceptions id="Part 2")
+
+@Objectives
+-Understand pre/post conditions in method specs. write correct specs
+-write tests against a spec
+-know diff. between checked/unchecked exceptions in Java
+-how to use exceptions for special results
+
+@Introduction
+-specs for teamwork. act as contract - implementer responsible for meeting contract, client relies on contract to use method.
+-pre/post conditions
+-exceptions
+
+@Specifications(#Why specs?, #Specification Structure)
+
+@Why specs?
+-diff. programmers on a team can have diff. specs in mind
+-help you find exactly where errors are
+-reading specs is easier than reading code
+-implementer has freedom to change implementation w/o telling client
+-preconditions in specs can rule out expensive checks
+-firewall 	-shield client from details of code
+			-shield implementer from details of usage
+			- <i>decoupling</i>
+
+@Specification Structure
+-preconditions, indicated by keyword <i>requires</i>
+-postconditions, indicated by keyword <i>effects</i>
+
+@Exceptions(#Exceptions for signaling bugs, #Exceptions for special results)
+
+@Exceptions for signaling bugs
+-exceptions when bugs happen (outside valid range, etc)
+
+@Exceptions for special results
+-exceptions when special things happen

@@ -13,9 +13,9 @@
         <h1>Notr</h1>
         <h3>Why Am I Responsible for This?</h3>
     </div>
-    <div class="container">
+    <div class="container" ng-controller="EditorCtrl">
         <div class="row">
-            <div class="col-md-6" id="raw" ng-controller="RawCtrl">
+            <div class="col-md-6" id="raw">
                 <nav>
                     <ul class="nav nav-pills">
                         <li>
@@ -25,16 +25,18 @@
                         <li></li>
                     </ul>
                 </nav>
-                <div ui-ace="{
+				<div ui-ace="{
                 	useWrapMode : true,
                 	theme : 'crimson_editor',
                 	mode : 'python'
-            		}" id="editor"></div>
+            		}" id="editor" ng-model="inputText"></div>
+				<textarea ng-model="inputText" ></textarea>
+				<!-- style="display: none;" -->
             </div>
             <div class="col-md-6" id="graph">
                 <nav>
                     <ul class="nav nav-pills nav-justified">
-                        <li><a href class="glyphicon glyphicon-play"> Draw</a></li>
+                        <li><a href class="glyphicon glyphicon-play" ng-click="addSpaces(); parseText()"> Draw</a></li>
                         <li><a href class="glyphicon glyphicon-repeat"> Replay</a></li>
                         <li><a href class="glyphicon glyphicon-save"> ExportPDF</a></li>
                     </ul>
@@ -66,7 +68,7 @@
 <script src="js/controllers.js"></script>
 <script>
 	var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
-	pdfMake.createPdf(docDefinition).open();	
+	// pdfMake.createPdf(docDefinition).open();	
 	// pdfMake.createPdf(docDefinition).download();
 </script>
 </html>

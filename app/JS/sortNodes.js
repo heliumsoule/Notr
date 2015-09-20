@@ -24,5 +24,5 @@ function sortNodes(nodeList) {
 		i++;
 	}
 	sortedNodes.pop();
-	return sortedNotes;
+	return sortedNodes;
 }

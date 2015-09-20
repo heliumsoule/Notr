@@ -11,7 +11,7 @@
 -pre/post conditions
 -exceptions
 
-@Specifications(#Introduction, id="Part 1")
+@Specifications(#Introduction, id=Part 1 )
 
 @Why specs?(#Specifications)
 -diff. programmers on a team can have diff. specs in mind
@@ -29,7 +29,7 @@
 -preconditions, indicated by keyword requires
 -postconditions, indicated by keyword effects
 
-@Exceptions(#Introduction, id="Part 2")
+@Exceptions(#Introduction, id=Part 2)
 
 @Exceptions for signaling bugs(#Exceptions)
 -exceptions when bugs happen (outside valid range, etc)

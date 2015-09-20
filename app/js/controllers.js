@@ -100,6 +100,7 @@ notrApp.controller('EditorCtrl', function($scope, $document) {
 					$scope.errorWarning = "Specify a starting node with @ on line " + (count + 1);
 					return;
 				} else {
+					$scope.errorWarning = "";
 					var nodeData = {
 						name: undefined,
 						parent: {
@@ -113,6 +114,7 @@ notrApp.controller('EditorCtrl', function($scope, $document) {
 						$scope.errorWarning = "The starting node should be specified with the () on line " + count + 1;
 						return;
 					} else {
+						$scope.errorWarning = "";
 						var end = /\(/.exec(currLine).index;
 						nodeData.name = currLine.substring(1, end);
 						$scope.nodeList.push(nodeData);
@@ -146,6 +148,7 @@ notrApp.controller('EditorCtrl', function($scope, $document) {
 					$scope.errorWarning = "Specify a parent description with (name) on line " + count;
 					return;
 				} else {
+					$scope.errorWarning = "";
 					var firstWordRegExp = /\w/,
 						matchFirstWord = firstWordRegExp.exec(currLine);
 					nodeData.name = currLine.substring(matchFirstWord.index, matchAtL.index + 1);
@@ -165,6 +168,7 @@ notrApp.controller('EditorCtrl', function($scope, $document) {
 						}
 						var a = splicedList.substring(leftInd.index + 1, rightInd.index);
 						if (rightInd.index - leftInd.index > 1) {
+							$scope.errorWarning = "";
 							nodeData.parent.name = splicedList.substring(leftInd.index + 1, rightInd.index);
 						} else {
 							$scope.errorWarning = "Node requires a parent name on line " + count;
@@ -181,12 +185,14 @@ notrApp.controller('EditorCtrl', function($scope, $document) {
 							$scope.errorWarning = "Separate parent name and id with a comma on line " + count;
 							return;
 						} else {
+							$scope.errorWarning = "";
 							var poundSpaceRegExp = /#/,
 								matchPound = poundSpaceRegExp.exec(parentName);
 							if (matchPound == null) {
 								$scope.errorWarning = "Parent name requires an # symbol on line " + count;
 								return;
 							} else {
+								$scope.errorWarning = "";
 								// var commaInd = parentName.lastIndexOf(',')
 								nodeData.parent.name = parentName.substring(matchPound.index + 1, matchCommaSpace.index);
 								splicedList = splicedList.substring(matchId.index, splicedList.length);
@@ -201,6 +207,7 @@ notrApp.controller('EditorCtrl', function($scope, $document) {
 				}
 				$scope.nodeList.push(nodeData)
 			} else if (indexSymPound != null) {
+				$scope.errorWarning = "";
 				$scope.nodeList[$scope.nodeList.length - 1].text.push(currLine.substring(indexSymPound.index + 1));
 			} else {
 				$scope.errorWarning = "Specify either an @ or - attribute at the start of line " + count;
@@ -211,8 +218,8 @@ notrApp.controller('EditorCtrl', function($scope, $document) {
 	};
 
 	//graph.js datacontroller
-	$scope.height = 1500;
-	$scope.width = 1000;
+	$scope.height = 2000;
+	$scope.width = 1500;
 	$scope.block = [];
 	$scope.link = [];
 	$scope.dis_block = [];

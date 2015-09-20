@@ -12,7 +12,7 @@ for curLine in lines:
 		}
 		node = Node()
 		parIndex = arrayGetIndexElements("^\(").index
-		if parIndex == -1:
+		if parIndex == -1:l
 			throw error "Specify a parent description with () on line " + curLine
 
 		else:

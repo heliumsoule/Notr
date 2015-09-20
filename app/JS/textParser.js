@@ -8,7 +8,14 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 		console.log(typeof(inputText));
 		if (typeof(inputText) === "string") {
 			breakText = inputText.replace(/r?\n/g, '\n');
-			$scope.inputText = breakText.split('\n');
+			breakText = breakText.split('\n');
+			for (var item in breakText) {
+				console.log("What is the item ", item);
+				if (breakText[item] == '') {
+					breakText.splice(item, 1);
+				}
+			}
+			$scope.inputText = breakText;
 			console.log($scope.inputText);
 		}
 		else {
@@ -23,7 +30,6 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 		}
 		var text = $scope.inputText;
 		$scope.nodeList = [];
-		nodeList = [];
 		var count = 0, foundAt = false;
 		while (count < $scope.inputText.length) {
 			currLine = $scope.inputText[count];
@@ -42,7 +48,7 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 						},
 						text: []
 					};
-					if (/\(/.exec(currLine).index == -1) {
+					if (/\(/.exec(currLine) == null) {
 						$scope.errorWarning = "The starting node should be specified with the () on line " + count + 1;
 						return;
 					}
@@ -50,22 +56,22 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 						var end = /\(/.exec(currLine).index;
 						nodeData.name = currLine.substr(1, end - 1);
 						$scope.nodeList.push(nodeData);
-						count = count + 1
+						count = count + 1;
 						console.log($scope.nodeList);
-						// break;
+						break;
 					}
 
 				}
 			}
 			count = count + 1;
 		}
-		console.log("What is i ", count);
-		console.log($scope.inputText.length);
 		for(var i = count; i < $scope.inputText.length; i++) {
+			nodeList = [];
 			var currLine = $scope.inputText[i];
 			console.log("What is the currLine ", currLine);
-			var indexSymAt = /@/.exec(currLine).index, indexSymPound = /-/.exec(currLine).index;
-			if (indexSymAt != -1) {
+			var indexSymAt = /@/.exec(currLine), indexSymPound = /-/.exec(currLine);
+			console.log("Where is the error ? ");
+			if (indexSymAt != null) {
 				var nodeData = {
 					name: undefined,
 					parent: {
@@ -75,68 +81,98 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 					},
 					text: []
 				};
-				var atRegExp = /[^\\]\(/, matchAt = atRegExp.exec(currLine);
-				if (matchAt.index == -1) {
+				var atLRegExp = /[^\\]\(/, matchAtL = atLRegExp.exec(currLine);
+				var atRRegExp = /\)/, matchAtR = atRRegExp.exec(currLine);
+				if (matchAtL == null || matchAtR == null) {
 					$scope.errorWarning = "Specify a parent description with (name) on line " + count;
 					return;
 				}
 				else {
+					console.log("Am I here ?");
 					firstWordRegExp = /\w/;
 					matchFirstWord = firstWordRegExp.exec(currLine);
-					nodeData.name = currLine.substr(matchFirstWord.index,matchAt.index);
-					splicedList = currLine.substr(matchAt.index + matchAt[0].length);
+					nodeData.name = currLine.substr(matchFirstWord.index,matchAtL.index);
+					splicedList = currLine.substr(matchAtL.index + matchAtL[0].length - 1);
+					console.log("What does splicedList look like ", splicedList);
+					console.log("What does splicedList look like ", splicedList);
+					console.log("What does splicedList look like ", splicedList);
+					console.log("What does splicedList look like ", splicedList);
 					var idRegExp = /id\s*=/, matchId = idRegExp.exec(splicedList);
-					if (matchAt.index == -1) {
-						parentNode.id = undefined;
-						parenthesisRegExp = /\([\s\w]*\)/;
-						var name = parenthesisRegExp.exec(splicedList);
-						if (name[0].length != 0) {
-							parentNode.name = name[0];
+					console.log("What is the matchId ", matchId);
+					console.log("What is the matchId ", matchId);
+					console.log("What is the matchId ", matchId);
+					if (matchId == null) {
+						nodeData.parent.id = undefined;
+						var pLeftRegExp = /\#/, pRightRegExp = /\)/;
+						// parenthesisRegExp = /\([\s\w]*\)/;
+						var leftInd = pLeftRegExp.exec(splicedList), rightInd = pRightRegExp.exec(splicedList);
+						if (leftInd == null) {
+							$scope.errorWarning = "Parent name requires an # symbol on line " + count;
+							return;
+						}
+						console.log("What is the splicedList ", splicedList);
+						console.log("What is the name ", name);
+						console.log("What is the right ind ", rightInd.index);
+						console.log("What is the right ind ", rightInd.index - 2);
+						console.log("What is the left ind ", leftInd);
+						console.log("What is the right ind ", rightInd);
+						var a = splicedList.substr(leftInd.index + 1, rightInd.index - 2);
+						console.log(a.length);
+						console.log(a);
+						if (rightInd.index - leftInd.index > 1) {
+							console.log("I'm NOT here ");
+							nodeData.parent.name = splicedList.substr(leftInd.index + 1, rightInd.index - 2);
 						}
 						else {
+							console.log("I'm here ");
 							$scope.errorWarning = "Node requires a parent name on line " + count;
 							return;
 						}
 
 					}
 					else {
-						var parentName = splicedList.substr(0, idRegExp.index), spaceBeforeRegExp = /\s\w/;
+						// console.log("Okay here goes the last error.");
+						var parentName = splicedList.substr(0, idRegExp.index), spaceBeforeRegExp = /\(\s\w/;
+						// console.log("What is the parentName ", parentName);
 						var matchSpaceBefore = spaceBeforeRegExp.exec(parentName);
-
-						if (matchSpaceBefore.index != -1) 
+						// console.log("What is the match ", matchSpaceBefore);
+						if (matchSpaceBefore != null) 
 							parentName = parentName.substr(matchSpaceBefore.index);
-
+						// console.log("What is the parentName ", parentName);
 						var commaSpaceRegExp = /[\s]*,[\s]*/;
 						var matchCommaSpace = commaSpaceRegExp.exec(parentName);
-						if (matchCommaSpace.index == -1) {
+						// console.log("Comma match ", matchCommaSpace);
+						if (matchCommaSpace == null) {
 							$scope.errorWarning = "Separate parent name and id with a comma on line " + count;
 							return;
 						}
 						else {
 							var poundSpaceRegExp = /#/, matchPound = poundSpaceRegExp.exec(parentName);
-							if (matchPound.index == -1) {
+							if (matchPound == null) {
 								$scope.errorWarning = "Parent name requires an # symbol on line " + count;
 								return;
 							}
 							else {
-								node.parent.name = parentName.substr(matchPound.index + 1, commaSpaceRegExp.index);
+								nodeData.parent.name = parentName.substr(matchPound.index + 1, commaSpaceRegExp.index);
 							}
 						}
 
 					}
 				}
-				nodeList.push(nodeData)
+				$scope.nodeList.push(nodeData)
 			}
-			else if (indexSymPound != -1) {
-				nodeList[-1].text.push(currLine.substr(indexSymPound + 1));
+			else if (indexSymPound != null) {
+				// console.log("WHOOO");
+				// console.log($scope.nodeList);
+				// console.log($scope.nodeList);
+				$scope.nodeList[$scope.nodeList.length - 1].text.push(currLine.substr(indexSymPound.index + 1));
 			}
 			else {
-				// $scope.errorWarning = "Specify either an @ or - attribute at the start of line " + count;
-				// return;
+				$scope.errorWarning = "Specify either an @ or - attribute at the start of line " + count;
+				return;
 			}
 		}
-		$scope.nodeList = nodeList;
-		console.log("What is the nodeList ", nodeList);
+		// console.log("What is the scope.nodeList ", $scope.nodeList);
 	};
 });
 

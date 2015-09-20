@@ -38,6 +38,11 @@ a {
 	color: #0097A7 !important;
 }
 
+#err {
+	color: #D32F2F !important;
+	font-style: italic;
+}
+
 #toggle {
 	width: 50px;	
 }

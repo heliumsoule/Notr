@@ -12,7 +12,7 @@ notrApp.controller('EditorCtrl', function($scope) {
 	}
 
 	$scope.show = 0;
-	$scope.errorWarning = "Today is a Saturday";
+	$scope.errorWarning = "";
 	$scope.nodeList = [];
 
 	$scope.addSpaces = function() {
@@ -29,6 +29,7 @@ notrApp.controller('EditorCtrl', function($scope) {
 			}
 			$scope.arrText = breakText;
 			console.log($scope.arrText);
+			$scope.errorWarning = "";
 		}
 		else {
 			$scope.errorWarning = "Please put text into the note taker";
@@ -51,6 +52,7 @@ notrApp.controller('EditorCtrl', function($scope) {
 					return;
 				}
 				else {
+					$scope.errorWarning = "";
 					var nodeData = {
 						name: undefined,
 						parent: {
@@ -65,6 +67,7 @@ notrApp.controller('EditorCtrl', function($scope) {
 						return;
 					}
 					else {
+						$scope.errorWarning = "";
 						var end = /\(/.exec(currLine).index;
 						nodeData.name = currLine.substring(1, end);
 						$scope.nodeList.push(nodeData);
@@ -81,6 +84,7 @@ notrApp.controller('EditorCtrl', function($scope) {
 			var currLine = $scope.arrText[i];
 			var indexSymAt = /@/.exec(currLine), indexSymPound = /-/.exec(currLine);
 			if (indexSymAt != null) {
+				$scope.errorWarning = "";
 				var nodeData = {
 					name: undefined,
 					parent: {
@@ -96,6 +100,7 @@ notrApp.controller('EditorCtrl', function($scope) {
 					return;
 				}
 				else {
+					$scope.errorWarning = "";
 					var firstWordRegExp = /\w/, matchFirstWord = firstWordRegExp.exec(currLine);
 					nodeData.name = currLine.substring(matchFirstWord.index, matchAtL.index + 1);
 					var splicedList = currLine.substring(matchAtL.index + matchAtL[0].length);
@@ -129,12 +134,14 @@ notrApp.controller('EditorCtrl', function($scope) {
 							return;
 						}
 						else {
+							$scope.errorWarning = "";
 							var poundSpaceRegExp = /#/, matchPound = poundSpaceRegExp.exec(parentName);
 							if (matchPound == null) {
 								$scope.errorWarning = "Parent name requires an # symbol on line " + count;
 								return;
 							}
 							else {
+								$scope.errorWarning = "";
 								// var commaInd = parentName.lastIndexOf(',')
 								nodeData.parent.name = parentName.substring(matchPound.index + 1, matchCommaSpace.index);
 								splicedList = splicedList.substring(matchId.index, splicedList.length);
@@ -150,6 +157,7 @@ notrApp.controller('EditorCtrl', function($scope) {
 				$scope.nodeList.push(nodeData)
 			}
 			else if (indexSymPound != null) {
+				$scope.errorWarning = "";
 				$scope.nodeList[$scope.nodeList.length - 1].text.push(currLine.substring(indexSymPound.index + 1));
 			}
 			else {
@@ -159,6 +167,37 @@ notrApp.controller('EditorCtrl', function($scope) {
 		}
 		console.log($scope.nodeList);
 	};
+
+	$scope.sortNodes = function() {
+		var nodeList = $scope.nodeList;
+		var node;
+		var sortedNodes = [];
+		for (var x=0; x < nodeList.length; x++) {
+			node = nodeList[x];
+			if (node.parent.name == undefined) {
+				sortedNodes[0] = [node];
+				nodeList.splice(x,1);
+			}
+		}
+		var i = 0;
+		while (i < nodeList.length) {
+			if (sortedNodes[i].length == 0) {
+				break;
+			}
+			sortedNodes[i+1] = [];
+			for (var y = 0; y < sortedNodes[i].length; y++) {
+				for (var z = 0; z < nodeList.length; z++) {
+					if (nodeList[z].parent.name == sortedNodes[i][y].name) {
+						sortedNodes[i+1].push(nodeList[z]);
+					}
+				}
+			}
+			i++;
+		}
+		sortedNodes.pop();
+		console.log(sortedNodes);
+	}
+
 });
 
 notrApp.directive('exportPdf', function() {
@@ -167,7 +206,7 @@ notrApp.directive('exportPdf', function() {
 		link: function(scope, element, attrs) {
 			// console.log(element);
 			var clickZone = element.children();
-			console.log(clickZone);
+			// console.log(clickZone);
 		}
 	}
 });

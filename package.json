@@ -1,8 +1,8 @@
 {
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "name": "notr",
-  "description": "",
+  "description": "Why Am I Responsible for This?",
   "repository": "",
   "license": "MIT",
   "devDependencies": {

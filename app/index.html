@@ -7,15 +7,7 @@
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="./css/font-awesome-4.4.0/css/font-awesome.css">
 </head>
-<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<body>
-	<div ng-app="myApp" ng-controller="textParser">
-		<textarea style="height:400px;width:800px;" ng-model="inputText"></textarea>
-		<button ng-click="addSpaces()">addSpaces</button>
-		<button ng-click="parseText()">parseText</button>
-		<button ng-click="sortNodes()">sort</button>
-		<p ng-bind="errorWarning"></p>
-	</div>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 
 <body>
     <div id="header-bar" class="clearfix">
@@ -31,29 +23,28 @@
                             <a href id="toggle" class="glyphicon glyphicon-align-justify"></a>
                         </li>
                         <li><a>File Name</a></li>
-                        <li></li>
+                        <li><a id="err">{{errorWarning}}</a></li>
                     </ul>
                 </nav>
-				<div ui-ace="{
+                <div ui-ace="{
                 	useWrapMode : true,
                 	theme : 'crimson_editor',
                 	mode : 'python'
             		}" id="editor" ng-model="inputText"></div>
-				<textarea ng-model="inputText" ></textarea>
-				<!-- style="display: none;" -->
+                <textarea ng-model="inputText" style="display: none;"></textarea>
             </div>
             <div class="col-md-6" id="graph">
                 <nav>
                     <ul class="nav nav-pills nav-justified">
-                        <li><a href class="glyphicon glyphicon-play" ng-click="addSpaces(); parseText()"> Draw</a></li>
-                        <li><a href class="glyphicon glyphicon-repeat"> Replay</a></li>
+                        <li><a href class="glyphicon glyphicon-play" ng-click="addSpaces(); parseText(); sortNodes()"> Draw</a></li>
+                        <li><a href class="glyphicon glyphicon-repeat"> Play</a></li>
                         <li><a href class="glyphicon glyphicon-save"> ExportPDF</a></li>
                     </ul>
                 </nav>
                 <div id="display">
-					<svg width="100" height="100" export-pdf>
-					  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
-					</svg>
+                    <svg width="100" height="100" export-pdf>
+                        <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+                    </svg>
                 </div>
             </div>
         </div>
@@ -76,8 +67,11 @@
 <!-- Controllers -->
 <script src="js/controllers.js"></script>
 <script>
-	var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
-	// pdfMake.createPdf(docDefinition).open();	
-	// pdfMake.createPdf(docDefinition).download();
+var docDefinition = {
+    content: 'This is an sample PDF printed with pdfMake'
+};
+// pdfMake.createPdf(docDefinition).open();	
+// pdfMake.createPdf(docDefinition).download();
 </script>
+
 </html>

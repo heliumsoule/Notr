@@ -1,0 +1,12 @@
+.node {
+    stroke: #000;
+    stroke-width: 3px;
+}
+.link {
+    stroke: #000;
+    stroke-opacity: .6;
+}
+
+.arrow-path {
+    fill: #000000;
+}

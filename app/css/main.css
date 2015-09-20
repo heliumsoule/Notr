@@ -20,7 +20,7 @@ body {
 #header-bar {
 	font-family: 'Roboto Mono', sans-serif;
 	text-align: center;
-	background-color: #0097A7;
+	background-color: #0097A7 !important;
 }
 
 #header-bar h1 {

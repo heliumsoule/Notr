@@ -1,4 +1,4 @@
-<html>
+<html ng-app="notrApp">
 
 <head>
     <title>Notr - Why Am I Responsible for This?</title>
@@ -14,35 +14,48 @@
         <h3>Why Am I Responsible for This?</h3>
     </div>
     <div class="container">
-	    <div class="row">
-	        <div class="col-md-6" id="raw">
-	            <nav>
-	                <ul class="nav nav-pills">
-	                    <li>
-	                        <a href id="toggle" class="glyphicon glyphicon-align-justify"></a>
-	                    </li>
-	                    <li><a>File Name</a></li>
-	                </ul>
-	            </nav>
-	            <textarea id="editor"></textarea>
-	        </div>
-
-	        <div class="col-md-6" id="graph">
-	            <nav>
-	                <ul class="nav nav-pills nav-justified">
-	                    <li><a href class="glyphicon glyphicon-play"> Draw</a></li>
-	                    <li><a href class="glyphicon glyphicon-repeat"> Replay</a></li>
-	                    <li><a href class="glyphicon glyphicon-save"> ExportPDF</a></li>
-	                </ul>
-	            </nav>
-	            <div id="display">GRAPH DISPLAY HERE</div>
-	        </div>
-	    </div>
-	    <div id="credits">
-	        <p>Notr - Developed at HackMIT 2015</p>
-	        <p>Copyright &copy 2015 J. Lin, J. Huang, H. Do, &amp S. Song</p>
-	    </div>    	
+        <div class="row">
+            <div class="col-md-6" id="raw" ng-controller="RawCtrl">
+                <nav>
+                    <ul class="nav nav-pills">
+                        <li>
+                            <a href id="toggle" class="glyphicon glyphicon-align-justify"></a>
+                        </li>
+                        <li><a>File Name</a></li>
+                        <li></li>
+                    </ul>
+                </nav>
+                <div ui-ace="{
+                	useWrapMode : true,
+                	theme : 'crimson_editor',
+                	mode : 'python'
+            		}" id="editor"></div>
+            </div>
+            <div class="col-md-6" id="graph">
+                <nav>
+                    <ul class="nav nav-pills nav-justified">
+                        <li><a href class="glyphicon glyphicon-play"> Draw</a></li>
+                        <li><a href class="glyphicon glyphicon-repeat"> Replay</a></li>
+                        <li><a href class="glyphicon glyphicon-save"> ExportPDF</a></li>
+                    </ul>
+                </nav>
+                <div id="display">GRAPH DISPLAY HERE</div>
+            </div>
+        </div>
+        <div id="credits">
+            <p>Notr - Developed at HackMIT 2015</p>
+            <p>Copyright &copy 2015 J. Lin, J. Huang, H. Do, &amp S. Song</p>
+        </div>
     </div>
 </body>
+<!-- AngularJS and Angular-Route -->
+<script src="../bower_components/ace-builds/src-noconflict/ace.js"></script>
+<script src="../bower_components/angular/angular.min.js"></script>
+<script src="../bower_components/angular-ui-ace/ui-ace.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<!-- jQuery -->
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Controllers -->
+<script src="js/controllers.js"></script>
 
 </html>

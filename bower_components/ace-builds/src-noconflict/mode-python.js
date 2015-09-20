@@ -1,3 +1,8 @@
+// This is a modified Python mode to fit the purpose of Notr
+// The modification includes deletion of keywords, builtinConstants, and builtinFunctions
+
+// Modification occurs on line 63
+
 ace.define("ace/mode/python_highlight_rules",["require","exports","module","ace/lib/oop","ace/mode/text_highlight_rules"], function(require, exports, module) {
 "use strict";
 
@@ -7,24 +12,15 @@ var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var PythonHighlightRules = function() {
 
     var keywords = (
-        "and|as|assert|break|class|continue|def|del|elif|else|except|exec|" +
-        "finally|for|from|global|if|import|in|is|lambda|not|or|pass|print|" +
-        "raise|return|try|while|with|yield"
+        ""
     );
 
     var builtinConstants = (
-        "True|False|None|NotImplemented|Ellipsis|__debug__"
+        ""
     );
 
     var builtinFunctions = (
-        "abs|divmod|input|open|staticmethod|all|enumerate|int|ord|str|any|" +
-        "eval|isinstance|pow|sum|basestring|execfile|issubclass|print|super|" +
-        "binfile|iter|property|tuple|bool|filter|len|range|type|bytearray|" +
-        "float|list|raw_input|unichr|callable|format|locals|reduce|unicode|" +
-        "chr|frozenset|long|reload|vars|classmethod|getattr|map|repr|xrange|" +
-        "cmp|globals|max|reversed|zip|compile|hasattr|memoryview|round|" +
-        "__import__|complex|hash|min|set|apply|delattr|help|next|setattr|" +
-        "buffer|dict|hex|object|slice|coerce|dir|id|oct|sorted|intern"
+        ""
     );
     var keywordMapper = this.createKeywordMapper({
         "invalid.deprecated": "debugger",
@@ -51,10 +47,7 @@ var PythonHighlightRules = function() {
     var stringEscape =  "\\\\(x[0-9A-Fa-f]{2}|[0-7]{3}|[\\\\abfnrtv'\"]|U[0-9A-Fa-f]{8}|u[0-9A-Fa-f]{4})";
 
     this.$rules = {
-        "start" : [ {
-            token : "comment",
-            regex : "#.*$"
-        }, {
+        "start" : [{
             token : "string",           // multi line """ string start
             regex : strPre + '"{3}',
             next : "qqstring3"
@@ -70,7 +63,13 @@ var PythonHighlightRules = function() {
             token : "string",           // ' string
             regex : strPre + "'(?=.)",
             next : "qstring"
-        }, {
+        }, 
+//NOTR SYMBOLS
+        // {
+        // 	token: "string", 
+        // 	regex: "\\@|\\#|\\-" 
+        // }, 
+        {
             token : "constant.numeric", // imaginary
             regex : "(?:" + floatNumber + "|\\d+)[jJ]\\b"
         }, {
@@ -85,10 +84,12 @@ var PythonHighlightRules = function() {
         }, {
             token : keywordMapper,
             regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-        }, {
+        }, 
+        {
             token : "keyword.operator",
-            regex : "\\+|\\-|\\*|\\*\\*|\\/|\\/\\/|%|<<|>>|&|\\||\\^|~|<|>|<=|=>|==|!=|<>|="
-        }, {
+            regex : "\\@|\\#|\\-"
+        }, 
+        {
             token : "paren.lparen",
             regex : "[\\[\\(\\{]"
         }, {

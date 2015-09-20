@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="./css/font-awesome-4.4.0/css/font-awesome.css">
 </head>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<body>
+	<div ng-app="myApp" ng-controller="textParser">
+		<textarea style="height:400px;width:800px;" ng-model="inputText"></textarea>
+		<button ng-click="addSpaces()">addSpaces</button>
+		<button ng-click="parseText()">parseText</button>
+		<button ng-click="sortNodes()">sort</button>
+		<p ng-bind="errorWarning"></p>
+	</div>
 
 <body>
     <div id="header-bar" class="clearfix">

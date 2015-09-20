@@ -3,22 +3,106 @@
 /* Controllers */
 var notrApp = angular.module('notrApp', ['ui.ace']);
 
-notrApp.controller('EditorCtrl', function($scope) {
+notrApp.controller('EditorCtrl', function($scope, $document) {
 	$scope.showBox = function() {
 		alert("Hello world");
 	};
-	$scope.print = function(aceValue) {
-		console.log(aceValue);
+
+	$scope.graph = function(prevNode, currNode) {
+		for (var i = 0; i < prevNode.length; i++) {
+			for (var j = 0; j < currNode.length; j++) {
+
+			}
+		}
+	};
+
+	$scope.sortCorrectly = function() {
+		var nodeList = $scope.nodeList;
+		for (var i = 0; i < nodeList.length; i++) {
+			var currElt = nodeList[i];
+			if (currElt.parent.name != undefined) {
+				var j = 0;
+				while (true) {
+					var otherElt = nodeList[j];
+					if (otherElt.name === currElt.parent.name) {
+						currElt.parent.count = j;
+						break;
+					}
+					j = j + 1;
+				}
+			}
+		}
+		$scope.nodeList = nodeList;
+		console.log(JSON.stringify($scope.nodeList));
+		console.log($scope.nodeList.sort(function(nodeOne, nodeTwo) {
+			if (nodeOne.parent.count - nodeTwo.parent.count > 0) return 1;
+			else if (nodeOne.parent.count - nodeTwo.parent.count < 0) return -1;
+			else return 0;
+		}));
+
+	};
+
+	$scope.sortMore = function() {
+		var nodeList = [];
+		for (var i = 0; i < $scope.nodeList.length; i++) {
+			var currArr = $scope.nodeList[i];
+			var inputArr = [currArr];
+			while (true && i < $scope.nodeList.length - 1) {
+				var nextArr = $scope.nodeList[++i];
+				console.log("What is the current i ", i);
+				if (currArr.parent.count === nextArr.parent.count) {
+					inputArr.push(nextArr);
+				}
+				else {
+					i = i - 1;
+					break;
+				}
+			}
+			nodeList.push(inputArr);
+		}
+
+		console.log(nodeList);
 	}
 
+	// $scope.sortNodes = function() {
+	// 	var nodeList = $scope.nodeList;
+	// 	var node;
+	// 	var sortedNodes = [];
+	// 	for (var x=0; x < nodeList.length; x++) {
+	// 		node = nodeList[x];
+	// 		if (node.parent.name == undefined) {
+	// 			sortedNodes[0] = [node];
+	// 			nodeList.splice(x,1);
+	// 		}
+	// 	}
+	// 	var i = 0;
+	// 	while (i < nodeList.length) {
+	// 		if (sortedNodes[i].length == 0) {
+	// 			break;
+	// 		}
+	// 		sortedNodes[i+1] = [];
+	// 		for (var y = 0; y < sortedNodes[i].length; y++) {
+	// 			for (var z = 0; z < nodeList.length; z++) {
+	// 				if (nodeList[z].parent.name == sortedNodes[i][y].name) {
+	// 					sortedNodes[i+1].push(nodeList[z]);
+	// 				}
+	// 			}
+	// 		}
+	// 		i++;
+	// 	}
+	// 	sortedNodes.pop();
+	// 	console.log(sortedNodes);
+	// };
+
 	$scope.show = 0;
-	$scope.errorWarning = "";
+	$scope.errorWarning = "Today is a Saturday";
 	$scope.nodeList = [];
 
 	$scope.addSpaces = function() {
 		// console.log(inputText);
 		var inputText = $scope.inputText;
-		console.log(typeof(inputText));
+
+
 		if (typeof(inputText) === "string") {
 			var breakText = inputText.replace(/r?\n/g, '\n');
 			breakText = breakText.split('\n');
@@ -28,8 +112,7 @@ notrApp.controller('EditorCtrl', function($scope) {
 				}
 			}
 			$scope.arrText = breakText;
-			console.log($scope.arrText);
-			$scope.errorWarning = "";
+			console.log(breakText);
 		}
 		else {
 			$scope.errorWarning = "Please put text into the note taker";
@@ -52,13 +135,12 @@ notrApp.controller('EditorCtrl', function($scope) {
 					return;
 				}
 				else {
-					$scope.errorWarning = "";
 					var nodeData = {
 						name: undefined,
 						parent: {
 							name: undefined,
 							id: undefined,
-							tier: undefined
+							count: -1
 						},
 						text: []
 					};
@@ -67,7 +149,6 @@ notrApp.controller('EditorCtrl', function($scope) {
 						return;
 					}
 					else {
-						$scope.errorWarning = "";
 						var end = /\(/.exec(currLine).index;
 						nodeData.name = currLine.substring(1, end);
 						$scope.nodeList.push(nodeData);
@@ -84,7 +165,6 @@ notrApp.controller('EditorCtrl', function($scope) {
 			var currLine = $scope.arrText[i];
 			var indexSymAt = /@/.exec(currLine), indexSymPound = /-/.exec(currLine);
 			if (indexSymAt != null) {
-				$scope.errorWarning = "";
 				var nodeData = {
 					name: undefined,
 					parent: {
@@ -100,7 +180,6 @@ notrApp.controller('EditorCtrl', function($scope) {
 					return;
 				}
 				else {
-					$scope.errorWarning = "";
 					var firstWordRegExp = /\w/, matchFirstWord = firstWordRegExp.exec(currLine);
 					nodeData.name = currLine.substring(matchFirstWord.index, matchAtL.index + 1);
 					var splicedList = currLine.substring(matchAtL.index + matchAtL[0].length);
@@ -134,14 +213,12 @@ notrApp.controller('EditorCtrl', function($scope) {
 							return;
 						}
 						else {
-							$scope.errorWarning = "";
 							var poundSpaceRegExp = /#/, matchPound = poundSpaceRegExp.exec(parentName);
 							if (matchPound == null) {
 								$scope.errorWarning = "Parent name requires an # symbol on line " + count;
 								return;
 							}
 							else {
-								$scope.errorWarning = "";
 								// var commaInd = parentName.lastIndexOf(',')
 								nodeData.parent.name = parentName.substring(matchPound.index + 1, matchCommaSpace.index);
 								splicedList = splicedList.substring(matchId.index, splicedList.length);
@@ -157,7 +234,6 @@ notrApp.controller('EditorCtrl', function($scope) {
 				$scope.nodeList.push(nodeData)
 			}
 			else if (indexSymPound != null) {
-				$scope.errorWarning = "";
 				$scope.nodeList[$scope.nodeList.length - 1].text.push(currLine.substring(indexSymPound.index + 1));
 			}
 			else {
@@ -165,39 +241,8 @@ notrApp.controller('EditorCtrl', function($scope) {
 				return;
 			}
 		}
-		console.log($scope.nodeList);
+		console.log("What is the scope", $scope.nodeList);
 	};
-
-	$scope.sortNodes = function() {
-		var nodeList = $scope.nodeList;
-		var node;
-		var sortedNodes = [];
-		for (var x=0; x < nodeList.length; x++) {
-			node = nodeList[x];
-			if (node.parent.name == undefined) {
-				sortedNodes[0] = [node];
-				nodeList.splice(x,1);
-			}
-		}
-		var i = 0;
-		while (i < nodeList.length) {
-			if (sortedNodes[i].length == 0) {
-				break;
-			}
-			sortedNodes[i+1] = [];
-			for (var y = 0; y < sortedNodes[i].length; y++) {
-				for (var z = 0; z < nodeList.length; z++) {
-					if (nodeList[z].parent.name == sortedNodes[i][y].name) {
-						sortedNodes[i+1].push(nodeList[z]);
-					}
-				}
-			}
-			i++;
-		}
-		sortedNodes.pop();
-		console.log(sortedNodes);
-	}
-
 });
 
 notrApp.directive('exportPdf', function() {

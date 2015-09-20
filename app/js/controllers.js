@@ -218,7 +218,7 @@ notrApp.controller('EditorCtrl', function($scope, $document) {
 	};
 
 	//graph.js datacontroller
-	$scope.height = 2000;
+	$scope.height = 1500;
 	$scope.width = 1500;
 	$scope.block = [];
 	$scope.link = [];

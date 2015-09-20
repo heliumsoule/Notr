@@ -138,9 +138,6 @@ angular.module('myApp', []).controller('textParser', function($scope) {
 				$scope.nodeList.push(nodeData)
 			}
 			else if (indexSymPound != null) {
-				// console.log("WHOOO");
-				// console.log($scope.nodeList);
-				// console.log($scope.nodeList);
 				$scope.nodeList[$scope.nodeList.length - 1].text.push(currLine.substring(indexSymPound.index + 1));
 			}
 			else {

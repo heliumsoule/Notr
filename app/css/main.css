@@ -1,0 +1,77 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono);
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+body {
+	font-family: 'Roboto', sans-serif !important;
+}
+
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+
+#header-bar {
+	font-family: 'Roboto Mono', sans-serif;
+	text-align: center;
+	background-color: #0097A7;
+}
+
+#header-bar h1 {
+	margin-top: 15px;
+	color: #FFFFFF;
+}
+
+#header-bar h3 {
+	margin-top: 0;
+	color: #FFFFFF;
+	margin-bottom: 20px;
+}
+
+a {
+	color: #0097A7 !important;
+}
+
+#toggle {
+	width: 50px;	
+}
+
+#raw {
+	margin-top: 15px;
+	padding-right: 70px;
+	border-right: 3px solid #0097A7;
+}
+
+#editor {
+	font-family: 'Roboto Mono', sans-serif;
+	width: 100%;
+	height: 100%;
+	margin-top: 15px;
+	padding: 10px;
+}
+
+#graph {
+	margin-top: 15px;
+}
+
+#display {
+	margin-top: 15px;
+	text-align: center;
+}
+
+#credits {
+	margin: 50px 0 15px 0;
+	text-align: center;
+}
+
+#credits p {
+	margin: 0;
+	font-size: 12px;
+	color: #0097A7
+}

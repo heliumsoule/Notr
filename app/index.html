@@ -1,17 +1,72 @@
-<!DOCTYPE html>
+<html ng-app="notrApp">
+
 <head>
-	<title>Notr</title>
+    <title>Notr - Why Am I Responsible for This?</title>
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="./css/font-awesome-4.4.0/css/font-awesome.css">
 </head>
-<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
 <body>
-	<div ng-app="myApp" ng-controller="textParser">
-		<textarea style="height:400px;width:800px;" ng-model="inputText"></textarea>
-		<button ng-click="addSpaces()">addSpaces</button>
-		<button ng-click="parseText()">parseText</button>
-		<p ng-bind="errorWarning"></p>
-	</div>
-
-	<script src="JS/textParser.js"></script>
+    <div id="header-bar" class="clearfix">
+        <h1>Notr</h1>
+        <h3>Why Am I Responsible for This?</h3>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" id="raw" ng-controller="RawCtrl">
+                <nav>
+                    <ul class="nav nav-pills">
+                        <li>
+                            <a href id="toggle" class="glyphicon glyphicon-align-justify"></a>
+                        </li>
+                        <li><a>File Name</a></li>
+                        <li></li>
+                    </ul>
+                </nav>
+                <div ui-ace="{
+                	useWrapMode : true,
+                	theme : 'crimson_editor',
+                	mode : 'python'
+            		}" id="editor"></div>
+            </div>
+            <div class="col-md-6" id="graph">
+                <nav>
+                    <ul class="nav nav-pills nav-justified">
+                        <li><a href class="glyphicon glyphicon-play"> Draw</a></li>
+                        <li><a href class="glyphicon glyphicon-repeat"> Replay</a></li>
+                        <li><a href class="glyphicon glyphicon-save"> ExportPDF</a></li>
+                    </ul>
+                </nav>
+                <div id="display">
+					<svg width="100" height="100" export-pdf>
+					  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+					</svg>
+                </div>
+            </div>
+        </div>
+        <div id="credits">
+            <p>Notr - Developed at HackMIT 2015</p>
+            <p>Copyright &copy 2015 J. Lin, J. Huang, H. Do, &amp S. Song</p>
+        </div>
+    </div>
 </body>
-
+<!-- AngularJS and Angular-Route -->
+<script src="../bower_components/ace-builds/src-noconflict/ace.js"></script>
+<script src="../bower_components/angular/angular.min.js"></script>
+<script src="../bower_components/angular-ui-ace/ui-ace.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<!-- jQuery -->
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<!-- pfdMake -->
+<script src="../bower_components/pdfmake/build/pdfmake.min.js"></script>
+<script src="../bower_components/pdfmake/build/vfs_fonts.js"></script>
+<!-- Controllers -->
+<script src="js/controllers.js"></script>
+<script>
+	var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+	pdfMake.createPdf(docDefinition).open();	
+	// pdfMake.createPdf(docDefinition).download();
+</script>
 </html>

@@ -39,7 +39,11 @@
                         <li><a href class="glyphicon glyphicon-save"> ExportPDF</a></li>
                     </ul>
                 </nav>
-                <div id="display">GRAPH DISPLAY HERE</div>
+                <div id="display">
+					<svg width="100" height="100" export-pdf>
+					  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+					</svg>
+                </div>
             </div>
         </div>
         <div id="credits">
@@ -55,7 +59,14 @@
 <script src="../bower_components/angular-route/angular-route.js"></script>
 <!-- jQuery -->
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<!-- pfdMake -->
+<script src="../bower_components/pdfmake/build/pdfmake.min.js"></script>
+<script src="../bower_components/pdfmake/build/vfs_fonts.js"></script>
 <!-- Controllers -->
 <script src="js/controllers.js"></script>
-
+<script>
+	var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+	pdfMake.createPdf(docDefinition).open();	
+	// pdfMake.createPdf(docDefinition).download();
+</script>
 </html>
